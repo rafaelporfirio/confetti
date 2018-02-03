@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>confetti</title>
+    <style>
+	@-webkit-keyframes confettiMotion {
+		0% { -webkit-transform: translateY(0px) rotateX(0deg); }
+		100% { -webkit-transform: translateY(900px) rotateX(90deg); }
+	}
+	@keyframes confettiMotion {
+		0% { transform: translateY(0px) rotateX(0deg); }
+		100% { transform: translateY(900px) rotateX(90deg); }
+	}
+
+
+    #container {
+        width: 300px;
+        height: 250px;
+        top: 0px;
+        left: 0px;
+        position: relative;
+        border: 1px solid #333333;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    #confetti-box {
+        width: 300px;
+        height: 250px;
+        top: 0px;
+        left: 0px;
+        position: relative;
+    }
+
+    .externalConfetti {
+        position: relative;
+        top: 0px;
+        left: 0px;
+    }
+
+    .internalConfetti {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        
+    }
+    </style>
+    <script>
+    var time = [2, 4, 6];
+    var sizeWidth = [5, 10];
+    var sizeHeight = [10, 20, 25];
+    var colors = ['#7e0a73', '#e98910', '#e46c15', '#cb1a23', '#f6c800'];
+    var amount = 100;
+
+    function createConfetti() {
+
+        var confettiBox = document.getElementById('confetti-box');
+        var internalConfetti = document.createElement('div');
+        var externalConfetti = document.createElement('div');
+        var randomTime = time[Math.floor(Math.random() * time.length)];
+        var randomSizeWidth = sizeWidth[Math.floor(Math.random() * sizeWidth.length)];
+        var randomSizeHeight = sizeHeight[Math.floor(Math.random() * sizeHeight.length)];
+        var randomRotation = Math.floor(Math.random() * 60 - 25);
+
+        externalConfetti.appendChild(internalConfetti);
+        confettiBox.appendChild(externalConfetti);
+
+        internalConfetti.className = 'internalConfetti';
+        externalConfetti.className = 'externalConfetti';
+
+        internalConfetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        internalConfetti.style.left = Math.random() * amount + '%';
+        internalConfetti.style.top = -500 + 'px';
+        internalConfetti.style.width = randomSizeWidth + 'px';
+        internalConfetti.style.height = randomSizeHeight + 'px';
+		internalConfetti.style.animation = 'confettiMotion' + ' ' + randomTime + 's ease-in-out';
+
+        externalConfetti.style.transform = 'rotate(' + randomRotation + 'deg)';
+
+        internalConfetti.addEventListener("animationend", remove, false);
+        internalConfetti.addEventListener("webkitAnimationEnd", remove, false);
+
+        function remove() {
+            confettiBox.removeChild(confettiBox.childNodes[0]);
+        }
+
+
+    }
+
+    window.setInterval(createConfetti, 1000 / 60);
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="confetti-box">
+        </div>
+    </div>
+</body>
+
+</html>
